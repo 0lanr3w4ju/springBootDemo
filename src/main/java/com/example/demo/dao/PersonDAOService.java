@@ -26,6 +26,11 @@ public class PersonDAOService implements PersonDao{
         DB.add(new Person(id, person.getName(), person.getEmailAddress()));
     }
 
+//    public void createPerson(UUID id, Person person) {
+//        final String sql = "INSERT INTO person (id, name, emailAddress) VALUES (gen_random_uuid(), 'Alawode Morolake', 'rollyK@gmail')";
+//        jdbcTemplate.update(sql);
+//    }
+
     @Override
     public void updatePerson(UUID id, Person newPerson) {
         Optional<Person> person = selectPersonById(id);
@@ -64,11 +69,8 @@ public class PersonDAOService implements PersonDao{
     }
 
     @Override
-//    public List<Person> selectAllPersons() {
-//        return DB;
-//    }
     public List<Person> selectAllPersons() {
-        final String sql = "SELECT * FROM person";
+        final String sql = "SELECT * FROM person"; // sql command for query
         return jdbcTemplate.query(sql, (resultSet, i) -> {
             UUID id = UUID.fromString(resultSet.getString("id"));
             String name = resultSet.getString("name");
@@ -80,8 +82,16 @@ public class PersonDAOService implements PersonDao{
 
     @Override
     public Optional<Person> selectPersonById(UUID id) {
-        return DB.stream()
-                .filter(person -> person.getId().equals(id))
-                .findFirst();
+        final String sql = "SELECT * FROM person WHERE id = ?";
+        Person person = jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{id},
+                (resultSet, i) -> {
+                    UUID personID = UUID.fromString(resultSet.getString("id"));
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("emailAddress");
+                    return new Person(personID, name, email);
+                });
+        return Optional.ofNullable(person);
     }
 }

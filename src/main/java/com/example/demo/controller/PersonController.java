@@ -49,7 +49,7 @@ public class PersonController {
         return personService.listAllPersons();
     }
 
-    @GetMapping({"id/{id}"})
+    @GetMapping(path = "id/{id}")
     public Optional<Person> GetPersonByID(@PathVariable("id") UUID id) {
         return personService.selectPersonByID(id);
     }
