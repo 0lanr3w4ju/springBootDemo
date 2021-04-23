@@ -22,14 +22,16 @@ public class PersonDAOService implements PersonDao{
     }
 
     @Override
-    public void createPerson(UUID id, Person person) {
-        DB.add(new Person(id, person.getName(), person.getEmailAddress()));
-    }
-
 //    public void createPerson(UUID id, Person person) {
-//        final String sql = "INSERT INTO person (id, name, emailAddress) VALUES (gen_random_uuid(), 'Alawode Morolake', 'rollyK@gmail')";
-//        jdbcTemplate.update(sql);
+//        DB.add(new Person(id, person.getName(), person.getEmailAddress()));
 //    }
+
+    public void createPerson(UUID id, Person person) {
+        final String sql = "INSERT INTO person (id, name, emailAddress) VALUES (gen_random_uuid(), ?, ?)";
+
+
+//        jdbcTemplate.update(sql);
+    }
 
     @Override
     public void updatePerson(UUID id, Person newPerson) {
